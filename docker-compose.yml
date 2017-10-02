@@ -1,0 +1,12 @@
+version: '2'
+services:
+  screenshots:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env.docker
+    ports:
+      - '3000:3000'
+    volumes:
+      - './temp/logs:/app/logs'
