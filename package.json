@@ -6,7 +6,10 @@
   "scripts": {
     "start": "node src/index",
     "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "prepare": "npm run snyk-protect",
+    "postversion": "git push && git push --tags",
+    "deploy-patch": "npm version patch --force -m \"version %s\"",
+    "deploy-minor": "npm version minor --force -m \"version %s\""
   },
   "dependencies": {
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
