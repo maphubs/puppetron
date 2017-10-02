@@ -213,12 +213,12 @@ module.exports = function(app: any) {
       }
     };
 
-    app.get('/*', async (req, res) => {
+    app.get('/', async (req, res) => {
       var options: OptionsType = req.query;
       completeRequest(req, res, options);
     });
 
-    app.post('/*', async (req, res) => {
+    app.post('/', async (req, res) => {
       var options: OptionsType = req.body;
       completeRequest(req, res, options);
     });

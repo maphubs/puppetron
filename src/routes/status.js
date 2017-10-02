@@ -14,7 +14,7 @@ module.exports = function(app: any) {
   });
 
   app.get('/healthcheck', (req, res) => {
-    res.status(200).send();
+    res.status(200).send('OK!');
   });
 
   app.get('/favicon.ico', (req, res) => {
