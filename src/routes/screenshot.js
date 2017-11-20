@@ -155,13 +155,12 @@ module.exports = function(app: any) {
                 throw err;
               });
             }
-            const networkIdleTimeout = options.networkIdleTimeout ? options.networkIdleTimeout : 2000;
+        
             await Promise.race([
               responsePromise,
               page.goto(pageURL, {
                 timeout: 60000,
-                waitUntil: 'networkidle',
-                networkIdleTimeout
+                waitUntil: 'networkidle0'
               })
             ]);
       

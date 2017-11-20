@@ -11,7 +11,6 @@ export type OptionsType = {
   type: ['png' | 'jpeg' | 'pdf'],
   agent: string,
   force: boolean,
-  networkIdleTimeout: number,
   headers?: Object,
   clipSelector?: string,
   cookies?: Array<Object>,
