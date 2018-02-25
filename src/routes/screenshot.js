@@ -1,21 +1,21 @@
 //@flow
 const {URL} = require('url');
 const {DEBUG} = process.env;
-const http = require('http');
+// const http = require('http');
 //const cache = require('../services/cache').getCache();
 const getBrowser = require('../services/browser');
 const pdf = require('../formats/pdf');
 const image = require('../formats/image');
 const log = require('../services/log');
 
-const TIMEOUT = log.SCREENSHOT_TIMEOUT ? log.SCREENSHOT_TIMEOUT : 60;
-const MAX_REQUESTS = log.SCREENSHOT_MAX_REQUESTS ? log.SCREENSHOT_MAX_REQUESTS : 10000;
+// const TIMEOUT = log.SCREENSHOT_TIMEOUT ? log.SCREENSHOT_TIMEOUT : 60;
+// const MAX_REQUESTS = log.SCREENSHOT_MAX_REQUESTS ? log.SCREENSHOT_MAX_REQUESTS : 10000;
 
-const blocked = require('../blocked.json');
+// const blocked = require('../blocked.json');
 /*eslint-disable security/detect-non-literal-regexp */
-const blockedRegExp = new RegExp('(' + blocked.join('|') + ')', 'i');
+// const blockedRegExp = new RegExp('(' + blocked.join('|') + ')', 'i');
 
-const truncate = (str, len) => str.length > len ? str.slice(0, len) + '…' : str;
+// const truncate = (str, len) => str.length > len ? str.slice(0, len) + '…' : str;
 
 var asyncEach = async function(arr, fn) {
   for(const item of arr) await fn(item);
@@ -68,7 +68,7 @@ module.exports = function(app: any) {
           }
           const {origin, pathname} = new URL(options.url);
           const path = decodeURIComponent(pathname);
-          const {host} = req.headers;
+          //const {host} = req.headers;
 
 
           pageURL = origin + path;
@@ -93,8 +93,8 @@ module.exports = function(app: any) {
               await page.setUserAgent(options.agent);
             }
       
-            const nowTime = +new Date();
-            let reqCount = 0;
+            //const nowTime = +new Date();
+            //let reqCount = 0;
             //await page.setRequestInterceptionEnabled(true);
             /*
             page.on('request', (request) => {
@@ -128,7 +128,7 @@ module.exports = function(app: any) {
               }
             });
             */
-      
+            /*
             let responseReject;
             const responsePromise = new Promise((resolve, reject) => {
               responseReject = reject;
@@ -139,6 +139,7 @@ module.exports = function(app: any) {
                 responseReject(new Error('Possible infinite redirects detected.'));
               }
             });
+            */
       
             await page.setViewport({
               width,
@@ -152,17 +153,15 @@ module.exports = function(app: any) {
               .then(()=>{
                 return completeScreenshot(options, page, res);
               }).catch((err)=>{
-                throw err;
+                log.error(`Failed waiting for selector with error: ${err.message}`);
+                return completeScreenshot(options, page, res);
               });
             }
         
-            await Promise.race([
-              responsePromise,
-              page.goto(pageURL, {
-                timeout: 60000,
-                waitUntil: 'networkidle0'
-              })
-            ]);
+            await page.goto(pageURL, {
+              timeout: 60000,
+              waitUntil: 'networkidle0'
+            });
       
             // Pause all media and stop buffering
             /*
@@ -187,7 +186,7 @@ module.exports = function(app: any) {
         } catch (err) {
           log.error(err);
           if (!DEBUG && page) {
-            log.info('💔 Force close ' + pageURL || '');
+            log.info('💔 Force close ' + pageURL);
             page.removeAllListeners();
             page.close();
           }
