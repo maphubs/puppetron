@@ -10,7 +10,8 @@ module.exports = async function(){
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
-      '--use-gl'
+      '--use-gl',
+      '--lang=en-GB'
     ],
     dumpio: false,
     headless: true

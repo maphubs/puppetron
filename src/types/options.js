@@ -15,5 +15,8 @@ export type OptionsType = {
   clipSelector?: string,
   cookies?: Array<Object>,
   selector?: string,
-  selectorOptions: Object
+  selectorOptions: Object,
+  emulateMedia?: string,
+  printBackground?: boolean,
+  lang?: string
  }

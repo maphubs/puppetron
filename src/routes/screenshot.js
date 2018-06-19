@@ -92,7 +92,16 @@ module.exports = function(app: any) {
             if(options.agent){
               await page.setUserAgent(options.agent);
             }
+
+            if(options.lang){
+              await page.setExtraHTTPHeaders({
+                'Accept-Language': options.lang
+              });
+            }
       
+            if(options.emulateMedia){
+              await page.emulateMedia(options.emulateMedia);
+            }
             //const nowTime = +new Date();
             //let reqCount = 0;
             //await page.setRequestInterceptionEnabled(true);
