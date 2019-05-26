@@ -1,6 +1,6 @@
 // @flow
-var winston = require('winston');
-require('winston-daily-rotate-file');
+var winston = require('winston')
+require('winston-daily-rotate-file')
 
 var fileTransport = new (winston.transports.DailyRotateFile)({
   filename: 'logs/screenshots-%DATE%.log',
@@ -8,9 +8,9 @@ var fileTransport = new (winston.transports.DailyRotateFile)({
   zippedArchive: true,
   maxSize: '20m',
   maxFiles: '14d'
-});
+})
 
-var logger =  winston.createLogger({
+var logger = winston.createLogger({
   transports: [
     fileTransport,
     new winston.transports.Console({
@@ -20,7 +20,6 @@ var logger =  winston.createLogger({
       )
     })
   ]
-});
+})
 
-
-module.exports = logger;
+module.exports = logger

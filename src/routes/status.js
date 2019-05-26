@@ -1,24 +1,20 @@
-//@flow
-const cache = require('../services/cache').getCache();;
+// @flow
 
-module.exports = function(app: any) {
-
+module.exports = (app: any) => {
   app.get('/status', (req, res) => {
     res.status(200).send({
-     pages: cache.keys(),
       process: {
         versions: process.versions,
-        memoryUsage: process.memoryUsage(),
+        memoryUsage: process.memoryUsage()
       }
-    });
-  });
+    })
+  })
 
   app.get('/healthcheck', (req, res) => {
-    res.status(200).send('OK!');
-  });
+    res.status(200).send('OK!')
+  })
 
   app.get('/favicon.ico', (req, res) => {
-    res.status(204).send();
-  });
-
-};
+    res.status(204).send()
+  })
+}

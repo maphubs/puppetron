@@ -1,4 +1,4 @@
-FROM node:8-slim
+FROM node:10-slim
 
 LABEL maintainer="Kristofor Carle <kris@maphubs.com>"
 
@@ -16,13 +16,9 @@ RUN \
   fc-cache -f -v && \
   apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN npm install -g snyk
-
 WORKDIR /app
-COPY package.json yarn.lock .snyk /app/
-RUN yarn install --production --pure-lockfile
-
-RUN npm run snyk-protect
+COPY package.json package-lock.json /app/
+RUN npm install --production
 
 COPY ./src /app/src
 
@@ -30,4 +26,4 @@ VOLUME ["/app/logs"]
 
 EXPOSE 3000
 
-CMD yarn start
+CMD npm run start

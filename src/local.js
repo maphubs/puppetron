@@ -1,6 +1,6 @@
-require('dotenv').config();
-var getenv = require('getenv');
-getenv.disableErrors();
+require('dotenv').config()
+var getenv = require('getenv')
+getenv.disableErrors()
 
 var local = {
   INTERNAL_PORT: getenv('INTERNAL_PORT', 3000),
@@ -9,7 +9,7 @@ var local = {
   HOST: getenv('HOST'),
   DEBUG: getenv.bool('DEBUG', false),
   HEADFUL: getenv.bool('HEADFUL', false),
-  CHROME_BIN:  getenv('CHROME_BIN')
-};
+  CHROME_BIN: getenv('CHROME_BIN')
+}
 
-module.exports = local;
+module.exports = local

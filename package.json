@@ -1,48 +1,53 @@
 {
   "name": "maphubs-screenshots",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "main": "src/index.js",
   "license": "MIT",
   "scripts": {
+    "dev": "nodemon ./src/index.js",
     "start": "node src/index",
-    "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect",
+    "eslint": "node_modules/eslint/bin/eslint.js",
     "postversion": "git push && git push --tags",
     "deploy-patch": "npm version patch --force -m \"version %s\"",
     "deploy-minor": "npm version minor --force -m \"version %s\""
   },
   "dependencies": {
-    "babel-plugin-transform-flow-strip-types": "^6.22.0",
-    "babel-preset-env": "1.7.0",
-    "babel-preset-stage-0": "6.24.1",
-    "babel-register": "^6.26.0",
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/register": "^7.4.4",
     "body-parser": "1.18.3",
     "consign": "^0.1.6",
     "cors": "^2.8.4",
     "dotenv": "^6.0.0",
     "express": "4.16.3",
     "getenv": "^0.7.0",
-    "jimp": "0.2.28",
-    "lru-cache": "~4.1.3",
+    "jimp": "0.5.3",
     "morgan": "^1.8.2",
     "p-timeout": "~2.0.1",
-    "puppeteer": "1.5.0",
+    "puppeteer": "1.17.0",
     "raven": "^2.6.2",
-    "shrink-ray": "0.1.3",
-    "snyk": "^1.83.0",
+    "shrink-ray-current": "^4.0.0",
     "winston": "^3.0.0",
     "winston-daily-rotate-file": "^3.2.1"
   },
-  "devDependencies": {
-    "babel-eslint": "^8.2.3",
-    "eslint": "^4.19.1",
-    "eslint-plugin-babel": "^5.1.0",
-    "eslint-plugin-flowtype": "^2.49.3",
-    "eslint-plugin-import": "^2.12.0",
-    "eslint-plugin-promise": "^3.8.0",
-    "eslint-plugin-security": "^1.4.0",
-    "eslint-plugin-unicorn": "^4.0.3",
-    "flow-bin": "^0.74.0"
+  "optionalDependencies": {
+    "iltorb": "~2.0.0",
+    "node-zopfli-es": "~1.0.3"
   },
-  "snyk": true
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-flowtype": "^3.8.2",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-node": "^9.0.1",
+    "eslint-plugin-promise": "^4.1.1",
+    "eslint-plugin-security": "^1.4.0",
+    "eslint-plugin-standard": "^4.0.0",
+    "eslint-plugin-unicorn": "^8.0.2",
+    "flow-bin": "^0.98.1",
+    "nodemon": "^1.19.0"
+  }
 }
