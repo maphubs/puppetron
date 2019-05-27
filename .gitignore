@@ -2,3 +2,5 @@ node_modules
 .DS_Store
 temp
 logs
+.env
+test

@@ -1,7 +1,7 @@
 // @flow
 const puppeteer = require('puppeteer')
 const log = require('./log')
-const local = require('../local')
+const Config = require('../config')
 
 module.exports = async () => {
   log.info('🚀 Launch browser!')
@@ -16,15 +16,15 @@ module.exports = async () => {
     dumpio: false,
     headless: true
   }
-  if (local.DEBUG) config.dumpio = true
-  if (local.HEADFUL) {
+  if (Config.DEBUG) config.dumpio = true
+  if (Config.HEADFUL) {
     log.info('🤖🤖🤖 HEADFUL 🤖🤖🤖')
     config.headless = false
     config.args.push('--auto-open-devtools-for-tabs')
   }
-  if (local.CHROME_BIN && local.CHROME_BIN !== 'undefined') {
-    log.info(`🤖🤖🤖 Using Local Chrome ${local.CHROME_BIN} 🤖🤖🤖`)
-    config.executablePath = local.CHROME_BIN
+  if (Config.CHROME_BIN && Config.CHROME_BIN !== 'undefined') {
+    log.info(`🤖🤖🤖 Using Local Chrome ${Config.CHROME_BIN} 🤖🤖🤖`)
+    config.executablePath = Config.CHROME_BIN
   }
   return puppeteer.launch(config)
 }

@@ -12,11 +12,11 @@ export type OptionsType = {
   agent: string,
   force: boolean,
   headers?: Object,
-  clipSelector?: string,
   cookies?: Array<Object>,
   selector?: string,
   selectorOptions: Object,
   emulateMedia?: string,
   printBackground?: boolean,
-  lang?: string
+  lang?: string,
+  s3?: string
  }

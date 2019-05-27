@@ -8,7 +8,7 @@ const shrinkRay = require('shrink-ray-current')
 const bodyParser = require('body-parser')
 const Raven = require('raven')
 const log = require('./services/log')
-const local = require('./local')
+const config = require('./config')
 const version = require('../package.json').version
 var http = require('http')
 
@@ -18,11 +18,11 @@ app.disable('x-powered-by')
 
 log.info(`Environment: "${app.get('env').toString()}"`)
 
-const ravenConfig = (process.env.NODE_ENV === 'production') && local.SENTRY_DSN
+const ravenConfig = (process.env.NODE_ENV === 'production') && config.SENTRY_DSN
 Raven.config(ravenConfig, {
   release: version,
-  environment: local.ENV_TAG,
-  tags: { host: local.HOST },
+  environment: config.ENV_TAG,
+  tags: { host: config.HOST },
   parseUser: ['id', 'display_name', 'email']
 }).install()
 
@@ -72,8 +72,6 @@ app.use((req, res) => {
 })
 
 app.use((err, req, res) => {
-  // curl https://localhost:4003/error/403 -vk
-  // curl https://localhost:4003/error/403 -vkH "Accept: application/json"
   var statusCode = err.status || 500
   var statusText = ''
   var errorDetail = (process.env.NODE_ENV === 'production') ? 'Looks like we have a problem. A message was automatically sent to our team.' : err.stack
@@ -105,7 +103,7 @@ app.use((err, req, res) => {
 })
 
 var server = http.createServer(app)
-server.listen(local.INTERNAL_PORT, () => {
+server.listen(config.INTERNAL_PORT, () => {
   log.info('**** STARTING SERVER ****')
-  log.info('Server Running on port: ' + local.INTERNAL_PORT)
+  log.info('Server Running on port: ' + config.INTERNAL_PORT)
 })

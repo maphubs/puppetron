@@ -32,17 +32,20 @@ module.exports = (app: any) => {
     log.info('🗑 Disposing ' + options.url)
     page.removeAllListeners()
     try {
+      log.info('🗑 Clearing Cookies')
       const cookies = await page.cookies()
-      log.info(cookies)
+      log.info(JSON.stringify(cookies))
       if (cookies && Array.isArray(cookies) && cookies.length > 0) {
         await asyncEach(cookies, async (cookie) => {
           await page.deleteCookie(cookie)
         })
       }
     } catch (err) {
+      log.error('Error clearing cookies')
       log.error(err)
     }
-    await page.close()
+    log.info('🗑 Closing Page ' + options.url)
+    return page.close()
   }
 
   var completeRequest = async (req, res, options) => {
@@ -54,10 +57,10 @@ module.exports = (app: any) => {
         if (!/^https?:\/\//i.test(options.url)) {
           throw new Error('Invalid URL')
         }
-        const { origin, pathname } = new URL(options.url)
+        const { origin, pathname, hash } = new URL(options.url)
         const path = decodeURIComponent(pathname)
 
-        pageURL = origin + path
+        pageURL = origin + path + hash
         const width = parseInt(options.width, 10)
         const height = parseInt(options.height, 10)
 
@@ -95,24 +98,23 @@ module.exports = (app: any) => {
         })
 
         log.info('⬇️ Fetching ' + pageURL)
-
         if (options.selector) {
-          page.waitForSelector(options.selector, options.selectorOptions)
-            .then(() => {
-              return completeScreenshot(options, page, res)
-            }).catch((err) => {
-              log.error(`Failed waiting for selector with error: ${err.message}`)
-              return completeScreenshot(options, page, res)
+          try {
+            await page.goto(pageURL, {
+              timeout: 60000,
+              waitUntil: 'domcontentloaded'
             })
-        }
-
-        await page.goto(pageURL, {
-          timeout: 60000,
-          waitUntil: 'networkidle0'
-        })
-
-        if (!options.selector) {
-          completeScreenshot(options, page, res)
+            await page.waitForSelector(options.selector, options.selectorOptions)
+            await completeScreenshot(options, page, res)
+          } catch (err) {
+            log.error(`Failed waiting for selector with error: ${err.message}`)
+          }
+        } else {
+          await page.goto(pageURL, {
+            timeout: 60000,
+            waitUntil: 'networkidle0'
+          })
+          await completeScreenshot(options, page, res)
         }
       } catch (err) {
         log.error(err)

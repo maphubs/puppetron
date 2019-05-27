@@ -1,33 +1,27 @@
 // @flow
 import type { OptionsType } from '../types/options'
-const jimp = require('jimp')
 const pTimeout = require('p-timeout')
+const savetoS3 = require('../services/s3')
 
 module.exports = async (options: OptionsType, page: any, res: any) => {
-  const thumbWidth = parseInt(options.thumbWidth, 10) || null
   const fullPage = options.fullPage
-  const width = options.width
 
   const screenshot = await pTimeout(page.screenshot({
     type: options.type,
     fullPage
   }), 60 * 1000, 'Screenshot timed out')
 
-  res.writeHead(200, {
-    'content-type': `image/${options.type}`
-  })
-
-  if (thumbWidth && thumbWidth < width) {
-    let mimeType = jimp.MIME_JPEG
-    if (options.type === 'png') {
-      mimeType = jimp.MIME_PNG
+  if (options.s3) {
+    try {
+      const info = await savetoS3(options.type, options.s3, screenshot)
+      res.status(200).send(info)
+    } catch (err) {
+      res.status(500).send(err.message)
     }
-
-    const image = await jimp.read(screenshot)
-    image.resize(thumbWidth, jimp.AUTO).quality(options.quality).getBuffer(mimeType, (err, buffer) => {
-      res.end(buffer, 'binary')
-    })
   } else {
+    res.writeHead(200, {
+      'content-type': `image/${options.type}`
+    })
     res.end(screenshot, 'binary')
   }
 }
