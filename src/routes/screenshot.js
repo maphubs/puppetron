@@ -104,6 +104,7 @@ module.exports = (app: any) => {
               timeout: 60000,
               waitUntil: 'domcontentloaded'
             })
+            log.info('⏲ Waiting for selector: ' + options.selector)
             await page.waitForSelector(options.selector, options.selectorOptions)
             await completeScreenshot(options, page, res)
           } catch (err) {
