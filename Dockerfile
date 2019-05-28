@@ -20,6 +20,7 @@ WORKDIR /app
 COPY package.json package-lock.json /app/
 RUN npm install --production
 
+COPY .babelrc /app/
 COPY ./src /app/src
 
 VOLUME ["/app/logs"]
