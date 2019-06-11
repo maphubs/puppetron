@@ -94,7 +94,8 @@ module.exports = (app: any) => {
 
         await page.setViewport({
           width,
-          height
+          height,
+          deviceScaleFactor: options.deviceScaleFactor || 1
         })
 
         log.info('⬇️ Fetching ' + pageURL)
