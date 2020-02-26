@@ -109,7 +109,9 @@ module.exports = (app: any) => {
             await page.waitForSelector(options.selector, options.selectorOptions)
             await completeScreenshot(options, page, res)
           } catch (err) {
-            log.error(`Failed waiting for selector with error: ${err.message}`)
+            log.error(`⚠️ Failed waiting for selector with error: ${err.message}`)
+            log.info('🤷‍♀️ Attempting screenshot anyway...')
+            await completeScreenshot(options, page, res)
           }
         } else {
           await page.goto(pageURL, {
@@ -121,7 +123,7 @@ module.exports = (app: any) => {
       } catch (err) {
         log.error(err)
         if (!DEBUG && page) {
-          log.info('💔 Force close ' + pageURL)
+          log.info(`💔 Force close ${pageURL || 'Unknown'}`)
           page.removeAllListeners()
           page.close()
         }
