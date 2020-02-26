@@ -89,7 +89,7 @@ module.exports = (app: any) => {
         }
 
         if (options.emulateMedia) {
-          await page.emulateMedia(options.emulateMedia)
+          await page.emulateMediaType(options.emulateMedia)
         }
 
         await page.setViewport({
