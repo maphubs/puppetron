@@ -2,6 +2,7 @@
 import type { OptionsType } from '../types/options'
 const pTimeout = require('p-timeout')
 const savetoS3 = require('../services/s3')
+const log = require('../services/log')
 
 module.exports = async (options: OptionsType, page: any, res: any) => {
   const fullPage = options.fullPage
@@ -16,6 +17,7 @@ module.exports = async (options: OptionsType, page: any, res: any) => {
       const info = await savetoS3(options.type, options.s3, screenshot)
       res.status(200).send(info)
     } catch (err) {
+      log.error(err)
       res.status(500).send(err.message)
     }
   } else {
